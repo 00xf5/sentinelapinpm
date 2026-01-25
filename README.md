@@ -1,7 +1,7 @@
-# API Turnstile — CAPTCHA-Free API Bot Protection & Abuse Prevention
+# API Turnstile (Sentinel) — CAPTCHA-Free API Bot Protection, Abuse Prevention & Anti-Bot Middleware
 
 <div align="center">
-  <img src="https://sentinel.risksignal.name.ng/sentinel-logo.png" alt="Sentinel Logo" width="120" />
+  <img src="https://sentinel.risksignal.name.ng/sentinel-logo.png" alt="API Turnstile Sentinel - CAPTCHA-Free API Bot Protection Middleware" width="120" />
   <h3>Turnstile for API</h3>
   <p>Cloudflare Turnstile protects browsers. <b>Sentinel protects APIs.</b></p>
   <p>
@@ -13,15 +13,30 @@
 
 ---
 
-> **The first line of defense for modern APIs.**  
+> **The first line of defense for modern APIs — a CAPTCHA-free anti-bot middleware for API abuse prevention, credential stuffing, and automation attacks.**  
 > **Block bots, scripts, credential stuffing, and automation attacks — without rate limits or CAPTCHAs.**  
-> **API Turnstile is a high-velocity decision engine built specifically to protect API endpoints at the network edge.**
+> **API Turnstile is a Cloudflare Turnstile alternative built specifically for APIs.**
 
 ## What Is API Turnstile?
 
-API Turnstile (Sentinel) is a deterministic trust layer for APIs. Unlike traditional WAFs that rely on static IP blocklists or user-hostile CAPTCHAs, Sentinel uses **Infrastructure Forensics** and **Behavioral Work Tokens (BWT)** to differentiate between legitimate users and automated scripts in real-time.
+API Turnstile is a high-performance security middleware for Node.js, Express, Next.js, Bun, and Hono. Unlike traditional WAFs that rely on IP reputation or CAPTCHAs, Sentinel uses **Infrastructure Forensics** and **Behavioral Work Tokens (BWT)** to identify automated threats in real-time.
 
-It allows you to maintain a frictionless user experience while effectively blocking 99.9% of automated threats, including sophisticated headless browsers and residential proxy rotation.
+API Turnstile is an **anti-bot middleware for APIs** and a practical **Cloudflare Turnstile alternative for backend services**. 
+It protects REST and GraphQL APIs from abuse, credential stuffing, fake signups, scraping, and automated attacks — without browser challenges or CAPTCHAs.
+
+It allows legitimate traffic through with sub-50ms latency while forcing automated scripts to solve cryptographic challenges they aren't built for.
+
+## Use Cases
+
+API Turnstile is commonly used for:
+
+- **API Bot Protection** for public and private APIs
+- **CAPTCHA-Free Signup & Login Protection**
+- **Credential Stuffing Prevention**
+- **API Abuse & Scraping Prevention**
+- **Anti-Bot Protection for Mobile & SPA Backends**
+- **WAF Alternative for APIs**
+- **Rate Limit Alternatives using Trust Scoring**
 
 ## Architecture
 
@@ -187,6 +202,11 @@ BWT is our proprietary adaptive PoW system. When Sentinel identifies an "Unstabl
 - **Bun**: 1.0.0 and above.
 - **Cloud Runtime**: Vercel Edge, Cloudflare Workers, AWS Lambda.
 - **Database**: Zero external DB dependencies (Decision Engine is managed).
+
+## Related
+
+- [Sentinel API Security Platform](https://sentinel.risksignal.name.ng) — Managed API bot protection
+- [Why CAPTCHAs Fail for APIs](https://sentinel.risksignal.name.ng/blog/captchas-fail-for-apis)
 
 ## License
 
