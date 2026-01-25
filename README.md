@@ -1,4 +1,4 @@
-# api-turnstile (Sentinel)
+# API Turnstile — CAPTCHA-Free API Bot Protection & Abuse Prevention
 
 <div align="center">
   <img src="https://sentinel.risksignal.name.ng/sentinel-logo.png" alt="Sentinel Logo" width="120" />
@@ -13,9 +13,14 @@
 
 ---
 
-**api-turnstile** is the official Node.js adapter for [Sentinel](https://sentinel.risksignal.name.ng). It provides transparent, high-performance protection for Express, Fastify, Next.js, and Hono APIs.
+> **CAPTCHA-free API bot protection for Node.js and serverless APIs.**  
+> **Block bots, scripts, credential stuffing, and automation attacks — without rate limits or CAPTCHAs.**  
+> **API Turnstile is a Cloudflare Turnstile alternative built specifically for APIs.**
 
-Unlike traditional WAFs or Rate Limiters, Sentinel uses **infrastructure forensics** and **Behavioral Work Tokens (BWT)** to differentiate between legitimate users and automated scripts in real-time—without ever showing a CAPTCHA.
+## What Is API Turnstile?
+
+API Turnstile is an API bot protection and abuse prevention middleware for Node.js, Express, Next.js, Bun, and serverless environments.  
+It blocks automated attacks such as credential stuffing, fake account creation, payment fraud, and API scraping — without CAPTCHAs or browser JavaScript.
 
 ## 🚀 Key Features
 

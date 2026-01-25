@@ -1,7 +1,7 @@
 {
     "name": "api-turnstile",
     "version": "0.1.4",
-    "description": "Cloudflare Turnstile protects browsers — not APIs. Sentinel is a Turnstile for APIs. Block bots, scripts, and automation without CAPTCHAs.",
+    "description": "CAPTCHA-free API bot protection and abuse prevention middleware for Node.js, Express, Next.js, and serverless APIs.",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "bin": {
@@ -14,17 +14,19 @@
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "keywords": [
-        "api",
-        "security",
-        "bot-detection",
-        "turnstile",
-        "captcha",
-        "middleware",
-        "express",
-        "fastify",
-        "sentinel",
-        "fraud-prevention",
-        "rate-limiting"
+        "api security",
+        "api bot protection",
+        "api abuse prevention",
+        "anti bot",
+        "bot protection",
+        "captcha free",
+        "cloudflare turnstile alternative",
+        "credential stuffing",
+        "signup fraud",
+        "rate limiting alternative",
+        "express middleware",
+        "nextjs api",
+        "serverless security"
     ],
     "author": "Sentinel Security",
     "license": "MIT",
