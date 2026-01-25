@@ -1,6 +1,6 @@
 {
     "name": "api-turnstile",
-    "version": "0.1.6",
+    "version": "0.1.7",
     "description": "CAPTCHA-free API bot protection and abuse prevention middleware for Node.js, Express, Next.js, and serverless APIs.",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
