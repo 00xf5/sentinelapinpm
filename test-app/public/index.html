@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentinel Middleware Test</title>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #050505;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: #0a0a0a;
+            border: 1px solid #1a1a1a;
+            padding: 2rem;
+            border-radius: 12px;
+            width: 400px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #eee;
+        }
+
+        p {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Toggle Switch Styles */
+        .simulation-box {
+            background: #111;
+            border: 1px solid #222;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .toggle-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #aaa;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #333;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.slider {
+            background-color: #ff4444;
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(24px);
+        }
+
+        .status-badge {
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .clean {
+            color: #00ff88;
+            border: 1px solid #00ff88;
+        }
+
+        .malicious {
+            color: #ff4444;
+            border: 1px solid #ff4444;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.8rem;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 6px;
+            color: #fff;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #fff;
+            color: #000;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.3s;
+            margin-top: 1rem;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        #message {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 6px;
+            display: none;
+            font-size: 0.9rem;
+        }
+
+        .success {
+            background: rgba(0, 255, 136, 0.1);
+            color: #00ff88;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+        }
+
+        .error {
+            background: rgba(255, 68, 68, 0.1);
+            color: #ff4444;
+            border: 1px solid rgba(255, 68, 68, 0.2);
+        }
+
+        #sentinel-widget {
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Sentinel API Armor</h1>
+        <p>This request is protected by Sentinel Middleware.</p>
+
+        <div class="simulation-box">
+            <span class="toggle-label" id="ipStatus">Simulation: <span class="status-badge clean">Clean IP</span></span>
+            <label class="switch">
+                <input type="checkbox" id="ipToggle">
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <form id="testForm">
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" id="email" value="test@example.com" required>
+            </div>
+
+            <!-- Sentinel Widget Container -->
+            <div id="sentinel-widget" data-sitekey="sl_a76210dc525bccf84cd7888f1bdb99f6342933dd34aab415"></div>
+
+            <button type="submit">Submit Request</button>
+        </form>
+
+        <div id="message"></div>
+    </div>
+
+    <!-- Sentinel Widget Script -->
+    <script src="/widget.js"></script>
+
+    <script>
+        const form = document.getElementById('testForm');
+        const message = document.getElementById('message');
+        const ipToggle = document.getElementById('ipToggle');
+        const ipStatus = document.getElementById('ipStatus');
+
+        // Known Malicious IP (Tor Exit Node)
+        const MALICIOUS_IP = '185.220.101.10';
+
+        ipToggle.addEventListener('change', () => {
+            // Clear existing status and tokens when toggling
+            message.style.display = 'none';
+            const existingToken = form.querySelector('input[name="sentinel-token"]');
+            if (existingToken) existingToken.remove();
+
+            if (ipToggle.checked) {
+                ipStatus.innerHTML = 'Simulation: <span class="status-badge malicious">Malicious IP</span>';
+            } else {
+                ipStatus.innerHTML = 'Simulation: <span class="status-badge clean">Clean IP</span>';
+            }
+        });
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Result Reset
+            message.style.display = 'none';
+            message.innerText = '';
+
+            const email = document.getElementById('email').value;
+            const trustToken = form.querySelector('input[name="sentinel-token"]')?.value;
+            const isMalicious = ipToggle.checked;
+
+            const isMalicious = ipToggle.checked;
+
+            // Make request to our protected endpoint
+            try {
+                const response = await fetch('/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...(trustToken ? { 'x-sentinel-trust': trustToken } : {}),
+                        ...(isMalicious ? { 'x-sentinel-mock-ip': MALICIOUS_IP } : {})
+                    },
+                    body: JSON.stringify({ email, password: 'test' })
+                });
+
+                const data = await response.json();
+
+                message.style.display = 'block';
+                if (response.ok) {
+                    message.className = 'success';
+                    message.innerText = `✅ Success: ${data.message}`;
+                } else {
+                    message.className = 'error';
+                    message.innerText = `🚫 Blocked: ${data.reason || data.error || 'Security check failed'}`;
+                }
+            } catch (err) {
+                message.style.display = 'block';
+                message.className = 'error';
+                message.innerText = `❌ Error: ${err.message}`;
+            }
+        });
+
+        // Listen for Sentinel Success Event
+        document.addEventListener('sentinelSuccess', (e) => {
+            console.log('🛡️ Sentinel Verified!', e.detail);
+        });
+    </script>
+</body>
+
+</html>

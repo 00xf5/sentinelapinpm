@@ -1,0 +1,13 @@
+{
+    "name": "api-turnstile-test",
+    "version": "1.0.0",
+    "description": "Test application for api-turnstile package",
+    "type": "module",
+    "scripts": {
+        "dev": "node server.js"
+    },
+    "dependencies": {
+        "dotenv": "^17.2.3",
+        "express": "^5.0.1"
+    }
+}

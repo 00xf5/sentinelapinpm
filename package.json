@@ -1,0 +1,65 @@
+{
+    "name": "api-turnstile",
+    "version": "0.1.1",
+    "description": "Cloudflare Turnstile protects browsers — not APIs. Sentinel is a Turnstile for APIs. Block bots, scripts, and automation without CAPTCHAs.",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "bin": {
+        "sentinel": "dist/cli/index.js"
+    },
+    "scripts": {
+        "build": "tsc",
+        "dev": "tsc --watch",
+        "prepublishOnly": "npm run build",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+        "api",
+        "security",
+        "bot-detection",
+        "turnstile",
+        "captcha",
+        "middleware",
+        "express",
+        "fastify",
+        "sentinel",
+        "fraud-prevention",
+        "rate-limiting"
+    ],
+    "author": "Sentinel Security",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/risksignal/sentinel"
+    },
+    "bugs": {
+        "url": "https://github.com/risksignal/sentinel/issues"
+    },
+    "homepage": "https://sentinel.risksignal.name.ng",
+    "peerDependencies": {
+        "express": "^4.0.0 || ^5.0.0",
+        "fastify": "^4.0.0 || ^5.0.0"
+    },
+    "peerDependenciesMeta": {
+        "express": {
+            "optional": true
+        },
+        "fastify": {
+            "optional": true
+        }
+    },
+    "devDependencies": {
+        "@types/express": "^4.17.21",
+        "@types/node": "^20.11.0",
+        "fastify": "^5.7.1",
+        "typescript": "^5.3.3"
+    },
+    "files": [
+        "dist",
+        "README.md",
+        "LICENSE"
+    ],
+    "engines": {
+        "node": ">=18.0.0"
+    }
+}

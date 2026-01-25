@@ -1,0 +1,21 @@
+# Exclude all source files
+src/
+tsconfig.json
+package-lock.json
+
+# Exclude all dev tools
+examples/
+test-app/
+node_modules/
+.gitignore
+.npmignore
+
+# Exclude documentation meta
+PACKAGE_STATUS.md
+STEP_1_COMPLETE.md
+
+# Keep only build artifacts
+!dist/
+!README.md
+!LICENSE
+!package.json
