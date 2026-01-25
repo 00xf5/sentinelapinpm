@@ -1,6 +1,6 @@
 {
     "name": "api-turnstile",
-    "version": "0.1.2",
+    "version": "0.1.4",
     "description": "Cloudflare Turnstile protects browsers — not APIs. Sentinel is a Turnstile for APIs. Block bots, scripts, and automation without CAPTCHAs.",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
