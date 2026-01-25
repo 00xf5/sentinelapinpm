@@ -13,22 +13,36 @@
 
 ---
 
-> **CAPTCHA-free API bot protection for Node.js and serverless APIs.**  
+> **The first line of defense for modern APIs.**  
 > **Block bots, scripts, credential stuffing, and automation attacks — without rate limits or CAPTCHAs.**  
-> **API Turnstile is a Cloudflare Turnstile alternative built specifically for APIs.**
+> **API Turnstile is a high-velocity decision engine built specifically to protect API endpoints at the network edge.**
 
 ## What Is API Turnstile?
 
-API Turnstile is an API bot protection and abuse prevention middleware for Node.js, Express, Next.js, Bun, and serverless environments.  
-It blocks automated attacks such as credential stuffing, fake account creation, payment fraud, and API scraping — without CAPTCHAs or browser JavaScript.
+API Turnstile (Sentinel) is a deterministic trust layer for APIs. Unlike traditional WAFs that rely on static IP blocklists or user-hostile CAPTCHAs, Sentinel uses **Infrastructure Forensics** and **Behavioral Work Tokens (BWT)** to differentiate between legitimate users and automated scripts in real-time.
+
+It allows you to maintain a frictionless user experience while effectively blocking 99.9% of automated threats, including sophisticated headless browsers and residential proxy rotation.
+
+## Architecture
+
+Sentinel operates on a three-tier defense matrix:
+
+1.  **Fast-Path Matrix (< 20ms)**: Instant vetting against a global ASN/IP reputation matrix (OVH, Hetzner, DigitalOcean, etc.).
+2.  **Behavioral Work Tokens (BWT)**: A cryptographic challenge-response system that escalatesPoW difficulty for suspicious IPs.
+3.  **Infrastructure Forensics**: Deep analysis of request signatures to detect Puppeteer, Playwright, curl, and VPN/Proxy masking.
+
+---
 
 ## Key Features
 
-- **Sub-50ms Latency**: Built on a globally distributed decision engine.
-- **Adaptive Defenses**: Automatically escalates cryptographic challenges (BWT) for suspicious IPs.
-- **Multi-Framework**: First-class support for Node.js (Express/Fastify) and Edge Runtimes (Next.js/Bun).
-- **CLI Intelligence**: Stream live traffic decisions directly to your terminal with `sentinel tail`.
-- **Outcome-Based**: Focuses on business results (e.g., bot reduction, capital saved) rather than just "block counts".
+- **Extreme Performance**: Sub-50ms decision latency globally.
+- **Zero Friction**: No CAPTCHAs, no puzzles, no interrupted user flows.
+- **Adaptive Defenses**: Automatically scales security based on the `risk-score` of an incoming request.
+- **Framework Agnostic**: Native middleware for Express, Fastify, Next.js, Hono, and Bun.
+- **CLI Forensics**: Stream live traffic decisions and audit IPs directly from your terminal.
+- **Outcome-Focused**: Designed for Registration Fraud, Account Takeover (ATO), and Scraping Prevention.
+
+---
 
 ## Installation
 
@@ -36,9 +50,11 @@ It blocks automated attacks such as credential stuffing, fake account creation, 
 npm install api-turnstile
 ```
 
-## Quick Start
+---
 
-### Express / Node.js
+## Basic Integration
+
+### Express.js
 ```javascript
 import { sentinel } from 'api-turnstile';
 import express from 'express';
@@ -46,16 +62,16 @@ import express from 'express';
 const app = express();
 
 app.use(sentinel({
-  apiKey: 'your_api_key',
-  protect: ['/api/v1/auth/*', '/v1/payments'],
-  profile: 'api'
+  apiKey: 'YOUR_SENTINEL_KEY',
+  protect: ['/api/auth/*', '/v1/payments'],
+  profile: 'api' // Default profile
 }));
 ```
 
-### Next.js Edge Middleware
-```javascript
+### Next.js (Edge Middleware)
+```typescript
 // middleware.ts
-import { sentinelEdge } from 'api-turnstile/middleware/next';
+import { sentinelEdge } from 'api-turnstile';
 
 export default sentinelEdge({
   apiKey: process.env.SENTINEL_KEY,
@@ -64,55 +80,113 @@ export default sentinelEdge({
     '/api/public/*': 'monitor'
   }
 });
+
+export const config = {
+  matcher: '/api/:path*',
+};
 ```
 
-## Configuration Deep Dive
+---
+
+## Advanced Configuration
+
+The `sentinel` middleware accepts a `SentinelConfig` object for granular control.
 
 | Option | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
 | `apiKey` | `string` | **Required** | Your Sentinel API key. |
-| `protect` | `string[] \| Object` | `[]` | Paths to protect. Supports wildcards (`*`) and per-path modes. |
-| `profile` | `string` | `'api'` | Protection profile: `api`, `signup`, `payments`, `crypto`. |
-| `fail` | `'open' \| 'closed'` | `'closed'` | Strategy if the Sentinel API is unreachable. |
+| `protect` | `string[] \| Object` | `[]` | List of paths to protect or a map of path patterns to `ProtectionMode`. |
+| `profile` | `string` | `'api'` | Sensitivity profile: `api`, `signup`, `payments`, `crypto`. |
+| `fail` | `'open' \| 'closed'` | `'closed'` | Fail strategy if API is unreachable. `closed` blocks access. |
+| `onBlock` | `Function` | `403 JSON` | Custom block handler: `(req, res, decision) => void`. |
 | `bwt.enabled` | `boolean` | `true` | Enable Behavioral Work Tokens (Adaptive PoW). |
-| `onBlock` | `function` | Default 403 response | Custom handler for blocked requests. |
+| `webhooks.onBlock`| `string` | `undefined` | URL to POST to when an attack is blocked. |
 
-### Protection Modes
-- **`monitor`**: Logs activity but never blocks. Ideal for initial onboarding.
-- **`balanced`**: Blocks obvious bots and high-risk signals.
-- **`strict`**: Enforces zero-tolerance for automation and proxy traffic.
+### Path Protection Modes
+Control how strictly each path is enforced:
+- **`monitor`**: Passive logging. Never blocks.
+- **`balanced`**: Defensive mode. Blocks high-confidence automated threats.
+- **`strict`**: Zero-tolerance. Blocks any suspicious signal including VPNs and Datacenters.
+
+```javascript
+protect: {
+  '/api/public': 'monitor',
+  '/api/user/*': 'balanced',
+  '/api/sensitive': 'strict'
+}
+```
+
+---
+
+## Security Profiles
+
+Sentinel profiles tune the engine's heuristics based on the endpoint's value:
+
+| Profile | Focus | Use Case |
+| :--- | :--- | :--- |
+| **`api`** | Velocity | Standard API endpoints, data feeds. |
+| **`signup`** | Identity | Registration, Login, Forget Password. |
+| **`payments`** | Integrity | Checkout, Subscription, Payment Method Update. |
+| **`crypto`** | Pure Trust | Wallets, Faucets, On-Chain interactions. |
+
+---
+
+## Response Formats
+
+### Successful Decision (Allowed)
+Requests that pass Sentinel checks proceed seamlessly to your next middleware.
+
+### Blocked Decision (Default 403)
+If a request is blocked, Sentinel returns a detailed forensic response:
+
+```json
+{
+  "error": "Access denied",
+  "reason": "Headless browser signature detected (Puppeteer/Chrome)",
+  "remediation": {
+    "widget_required": false,
+    "trust_token_eligible": true
+  }
+}
+```
+
+---
 
 ## Sentinel CLI
 
-The package includes a powerful CLI for real-time forensics and monitoring.
+The package includes a powerful command-line interface for real-time traffic analysis.
 
 ```bash
-# Install globally
+# Install CLI globally
 npm install -g api-turnstile
 
-# Stream live decisions in real-time
+# Stream live traffic forensic decisions
 sentinel tail --key YOUR_API_KEY
 
-# Perform an immediate forensic check on an IP
+# Perform an immediate audit on an IP address
 sentinel check 1.2.3.4
 
-# View security outcomes and ROI stats
+# View security ROI and outcome metrics
 sentinel stats
 ```
 
+---
+
 ## Behavioral Work Tokens (BWT)
 
-BWT is Sentinel's secret weapon. When an IP is deemed "unstable" (not yet high-risk enough to block), Sentinel issues a cryptographic challenge.
+BWT is our proprietary adaptive PoW system. When Sentinel identifies an "Unstable" IP, it scales a cryptographic challenge that must be solved by the client. 
 
-1. Legitimate clients (using this SDK) solve the challenge in the background (~5ms overhead).
-2. Bot scripts (Headless Chrome, curl, python-requests) fail to solve the token.
-3. Your server rejects the request before it ever hits your business logic.
+1. **Legitimate Users**: The `api-turnstile` client (or frontend widget) solves the challenge in ~10-40ms in the background.
+2. **Bot Scripts**: Python, Go, and simple NodeJS scripts fail the challenge as they lack the cryptographic engine required to generate a valid `BWT-Nonce`.
 
-## Links
+---
 
-- **[Dashboard & API Management](https://sentinel.risksignal.name.ng)**
-- **[Documentation](https://sentinel.risksignal.name.ng/docs)**
-- **[GitHub Repository](https://github.com/00xf5/sentinelapinpm)**
+## Deployment & Compatibility
+
+- **Node.js**: 18.x and above.
+- **Bun**: 1.0.0 and above.
+- **Cloud Runtime**: Vercel Edge, Cloudflare Workers, AWS Lambda.
+- **Database**: Zero external DB dependencies (Decision Engine is managed).
 
 ## License
 
