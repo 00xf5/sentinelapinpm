@@ -2,7 +2,7 @@
 
 <div align="center">
   <img src="https://sentinel.risksignal.name.ng/sentinel-logo.png" alt="Sentinel Logo" width="120" />
-  <h3>The Deterministic Trust Layer for Modern APIs</h3>
+  <h3>Turnstile for API</h3>
   <p>Cloudflare Turnstile protects browsers. <b>Sentinel protects APIs.</b></p>
   <p>
     <a href="https://www.npmjs.com/package/api-turnstile"><img src="https://img.shields.io/npm/v/api-turnstile?color=orange&style=flat-square" alt="NPM Version" /></a>
@@ -22,21 +22,21 @@
 API Turnstile is an API bot protection and abuse prevention middleware for Node.js, Express, Next.js, Bun, and serverless environments.  
 It blocks automated attacks such as credential stuffing, fake account creation, payment fraud, and API scraping — without CAPTCHAs or browser JavaScript.
 
-## 🚀 Key Features
+## Key Features
 
-- **⚡ Sub-50ms Latency**: Built on a globally distributed decision engine.
-- **🛡️ Adaptive Defenses**: Automatically escalates cryptographic challenges (BWT) for suspicious IPs.
-- **🔌 Multi-Framework**: First-class support for Node.js (Express/Fastify) and Edge Runtimes (Next.js/Bun).
-- **🕹️ CLI Intelligence**: Stream live traffic decisions directly to your terminal with `sentinel tail`.
-- **🎯 Outcome-Based**: Focuses on business results (e.g., bot reduction, capital saved) rather than just "block counts".
+- **Sub-50ms Latency**: Built on a globally distributed decision engine.
+- **Adaptive Defenses**: Automatically escalates cryptographic challenges (BWT) for suspicious IPs.
+- **Multi-Framework**: First-class support for Node.js (Express/Fastify) and Edge Runtimes (Next.js/Bun).
+- **CLI Intelligence**: Stream live traffic decisions directly to your terminal with `sentinel tail`.
+- **Outcome-Based**: Focuses on business results (e.g., bot reduction, capital saved) rather than just "block counts".
 
-## 📦 Installation
+## Installation
 
 ```bash
 npm install api-turnstile
 ```
 
-## 🛠️ Quick Start
+## Quick Start
 
 ### Express / Node.js
 ```javascript
@@ -66,7 +66,7 @@ export default sentinelEdge({
 });
 ```
 
-## ⚙️ Configuration Deep Dive
+## Configuration Deep Dive
 
 | Option | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
@@ -82,7 +82,7 @@ export default sentinelEdge({
 - **`balanced`**: Blocks obvious bots and high-risk signals.
 - **`strict`**: Enforces zero-tolerance for automation and proxy traffic.
 
-## 💻 Sentinel CLI
+## Sentinel CLI
 
 The package includes a powerful CLI for real-time forensics and monitoring.
 
@@ -100,7 +100,7 @@ sentinel check 1.2.3.4
 sentinel stats
 ```
 
-## 🧠 Behavioral Work Tokens (BWT)
+## Behavioral Work Tokens (BWT)
 
 BWT is Sentinel's secret weapon. When an IP is deemed "unstable" (not yet high-risk enough to block), Sentinel issues a cryptographic challenge.
 
@@ -108,12 +108,12 @@ BWT is Sentinel's secret weapon. When an IP is deemed "unstable" (not yet high-r
 2. Bot scripts (Headless Chrome, curl, python-requests) fail to solve the token.
 3. Your server rejects the request before it ever hits your business logic.
 
-## 🔗 Links
+## Links
 
 - **[Dashboard & API Management](https://sentinel.risksignal.name.ng)**
 - **[Documentation](https://sentinel.risksignal.name.ng/docs)**
 - **[GitHub Repository](https://github.com/00xf5/sentinelapinpm)**
 
-## 📄 License
+## License
 
 MIT © [Sentinel Security](https://sentinel.risksignal.name.ng)
