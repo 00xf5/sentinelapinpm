@@ -1,6 +1,6 @@
 {
     "name": "api-turnstile",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "Cloudflare Turnstile protects browsers — not APIs. Sentinel is a Turnstile for APIs. Block bots, scripts, and automation without CAPTCHAs.",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -30,10 +30,10 @@
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "https://github.com/risksignal/sentinel"
+        "url": "https://github.com/00xf5/sentinelapinpm.git"
     },
     "bugs": {
-        "url": "https://github.com/risksignal/sentinel/issues"
+        "url": "https://github.com/00xf5/sentinelapinpm/issues"
     },
     "homepage": "https://sentinel.risksignal.name.ng",
     "peerDependencies": {
