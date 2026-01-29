@@ -27,6 +27,27 @@ Sentinel is built for the internet's edge. Deploy as a standard Node.js middlewa
 - **Edge Cache Support**: Sub-2ms rejection using Cloudflare KV or Vercel Edge Config.
 - **Agentic Governance**: Specific profiles to identify and throttle AI Agents vs Humans.
 
+### Example: Cloudflare Worker Edge Enforcement
+```typescript
+import { sentinelEdge } from 'api-turnstile';
+
+export default {
+  async fetch(request, env, ctx) {
+    const shield = sentinelEdge({
+      apiKey: env.SENTINEL_KEY,
+      cache: env.SENTINEL_KV, // Cloudflare KV Namespace
+      protect: ['/v1/*'],
+      profile: 'agentic' // Identify & throttle AI Agents
+    });
+
+    const blockResponse = await shield(request, ctx);
+    if (blockResponse) return blockResponse;
+
+    return await fetch(request);
+  }
+};
+```
+
 ---
 
 ## Key Features
@@ -125,6 +146,17 @@ Sentinel profiles tune the engine's heuristics based on the endpoint's value:
 | **`payments`** | Integrity | Checkout, Subscription, Payment Method Update. |
 | **`crypto`** | Pure Trust | Wallets, Faucets, On-Chain interactions. |
 | **`agentic`** | AI Governance | LLM Agents, Scrapers, Automated Crawlers. |
+
+### Using the Agentic Profile
+The `agentic` profile is designed to differentiate between human users and AI Agents (like GPT-5, Perplexity, etc.). When enabled, Sentinel provides granular signals that allow you to serve "Lite" or "Cached" content to bots while saving expensive compute for humans.
+
+```javascript
+app.use(sentinel({
+  apiKey: '...',
+  protect: ['/data/*'],
+  profile: 'agentic'
+}));
+```
 
 ---
 
