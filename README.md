@@ -1,50 +1,31 @@
-# API Turnstile (Sentinel) — CAPTCHA-Free API Bot Protection, Abuse Prevention & Anti-Bot Middleware
+# API Turnstile (Sentinel) — Turnstile for APIs
 
 <div align="center">
-  <img src="https://sentinel.risksignal.name.ng/sentinel-logo.png" alt="API Turnstile Sentinel - CAPTCHA-Free API Bot Protection Middleware" width="120" />
-  <h3>Turnstile for API</h3>
+  <img src="https://sentinel.risksignal.name.ng/sentinel-logo.png" alt="Sentinel Logo" width="120" />
+  <h3>Your APIs are being abused. You just don't see it yet.</h3>
   <p>Cloudflare Turnstile protects browsers. <b>Sentinel protects APIs.</b></p>
   <p>
     <a href="https://www.npmjs.com/package/api-turnstile"><img src="https://img.shields.io/npm/v/api-turnstile?color=orange&style=flat-square" alt="NPM Version" /></a>
-    <a href="https://github.com/00xf5/sentinelapinpm/blob/main/LICENSE"><img src="https://img.shields.io/npm/l/api-turnstile?style=flat-square" alt="MIT License" /></a>
     <a href="https://sentinel.risksignal.name.ng"><img src="https://img.shields.io/badge/latency-<50ms-green?style=flat-square" alt="Latency" /></a>
   </p>
 </div>
 
 ---
 
-> **The first line of defense for modern APIs — a CAPTCHA-free anti-bot middleware for API abuse prevention, credential stuffing, and automation attacks.**  
-> **Block bots, scripts, credential stuffing, and automation attacks — without rate limits or CAPTCHAs.**  
-> **API Turnstile is a Cloudflare Turnstile alternative built specifically for APIs.**
+**Sentinel** is a high-velocity deterministic trust layer for modern APIs. It stops automated abuse, credential stuffing, and fake signups by analyzing **Infrastructure DNA** and enforcing **Behavioral Work Tokens** without ever showing a CAPTCHA to a human.
 
-## What Is API Turnstile?
+## 🚫 Problems We Stop
+- **Signup Flooding**: Thousands of fake accounts hitting your database.
+- **Credential Stuffing**: Automated login attempts using leaked passwords.
+- **API Scraping**: Competitors or AI agents draining your proprietary data.
+- **Ghost Traffic Tax**: Unnecessary AWS/Cloud compute costs from non-human traffic.
 
-API Turnstile is a high-performance security middleware for Node.js, Express, Next.js, Bun, and Hono. Unlike traditional WAFs that rely on IP reputation or CAPTCHAs, Sentinel uses **Infrastructure Forensics** and **Behavioral Work Tokens (BWT)** to identify automated threats in real-time.
+## ⚡ Global Edge Enforcement
+Sentinel is built for the internet's edge. Deploy as a standard Node.js middleware or a **Global Edge Guard** on Cloudflare Workers / Vercel Edge.
 
-API Turnstile is an **anti-bot middleware for APIs** and a practical **Cloudflare Turnstile alternative for backend services**. 
-It protects REST and GraphQL APIs from abuse, credential stuffing, fake signups, scraping, and automated attacks — without browser challenges or CAPTCHAs.
-
-It allows legitimate traffic through with sub-50ms latency while forcing automated scripts to solve cryptographic challenges they aren't built for.
-
-## Use Cases
-
-API Turnstile is commonly used for:
-
-- **API Bot Protection** for public and private APIs
-- **CAPTCHA-Free Signup & Login Protection**
-- **Credential Stuffing Prevention**
-- **API Abuse & Scraping Prevention**
-- **Anti-Bot Protection for Mobile & SPA Backends**
-- **WAF Alternative for APIs**
-- **Rate Limit Alternatives using Trust Scoring**
-
-## Architecture
-
-Sentinel operates on a three-tier defense matrix:
-
-1.  **Fast-Path Matrix (< 20ms)**: Instant vetting against a global ASN/IP reputation matrix (OVH, Hetzner, DigitalOcean, etc.).
-2.  **Behavioral Work Tokens (BWT)**: A cryptographic challenge-response system that escalatesPoW difficulty for suspicious IPs.
-3.  **Infrastructure Forensics**: Deep analysis of request signatures to detect Puppeteer, Playwright, curl, and VPN/Proxy masking.
+- **Fast-Path Matrix**: Instant identification of hosting/proxy infrastructure.
+- **Edge Cache Support**: Sub-2ms rejection using Cloudflare KV or Vercel Edge Config.
+- **Agentic Governance**: Specific profiles to identify and throttle AI Agents vs Humans.
 
 ---
 
@@ -143,6 +124,7 @@ Sentinel profiles tune the engine's heuristics based on the endpoint's value:
 | **`signup`** | Identity | Registration, Login, Forget Password. |
 | **`payments`** | Integrity | Checkout, Subscription, Payment Method Update. |
 | **`crypto`** | Pure Trust | Wallets, Faucets, On-Chain interactions. |
+| **`agentic`** | AI Governance | LLM Agents, Scrapers, Automated Crawlers. |
 
 ---
 

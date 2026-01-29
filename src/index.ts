@@ -1,7 +1,7 @@
 // Export middleware
 export { sentinel } from './middleware/express';
 export { sentinelFastify } from './middleware/fastify';
-export { sentinelEdge } from './middleware/next';
+export { sentinelEdge } from './edge/adapter';
 export { sentinelHono } from './middleware/hono';
 
 // Export client
