@@ -86,8 +86,14 @@ export function sentinel(config: SentinelConfig) {
         }
 
         const ip = getClientIP(req);
-        const trustToken = req.headers['x-sentinel-trust'] as string;
+        let trustToken = req.headers['x-sentinel-trust'] as string;
         const bwtNonce = req.headers['x-bwt-nonce'] as string;
+
+        // Auto-extract token from body if enabled
+        if (!trustToken && config.verifyToken) {
+            const field = config.trustTokenField || 'sentinel-token';
+            trustToken = req.body?.[field] || req.query?.[field];
+        }
 
         try {
             const decision = await client.check({
